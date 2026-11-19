@@ -1,0 +1,30 @@
+name: Generate Catalogue PDF
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install tools
+        run: |
+          pip install pandas jinja2 playwright
+          playwright install chromium
+
+      - name: Build Catalogue PDF
+        run: python build_catalog.py
+
+      - name: Upload PDF for download
+        uses: actions/upload-artifact@v4
+        with:
+          name: KBS_Catalogue_PDF
+          path: KBS_Catalogue.pdf
