@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    @page {
+      size: A4 landscape;
+      margin: 14mm 10mm 14mm 10mm;
+
+      @bottom-left {
+        content: "9829179480";
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 10pt;
+        font-weight: bold;
+        color: #111;
+      }
+      @bottom-right {
+        content: "7718861024";
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 10pt;
+        font-weight: bold;
+        color: #111;
+      }
+    }
+
+    @page :first {
+      margin: 0;
+      @bottom-left { content: none; }
+      @bottom-right { content: none; }
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      color: #111;
+      background: #fff;
+    }
+
+    /* Cover Page */
+    .cover {
+      width: 297mm;
+      height: 210mm;
+      background: #1a1a1a;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      page-break-after: always;
+    }
+    .cover-logo {
+      font-size: 92pt;
+      font-weight: 900;
+      letter-spacing: -4px;
+      line-height: 1;
+    }
+    .cover-sub {
+      font-size: 16pt;
+      letter-spacing: 8px;
+      margin-top: 8px;
+      font-weight: 400;
+    }
+    .cover-tag {
+      margin-top: 28px;
+      font-size: 11pt;
+      letter-spacing: 3px;
+      color: #bbb;
+    }
+
+    /* Category Section */
+    .section {
+      page-break-before: always;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #111;
+      padding-bottom: 6px;
+      margin-bottom: 12px;
+    }
+
+    .brand-mark .kbs {
+      font-size: 24pt;
+      font-weight: 900;
+      letter-spacing: -1.5px;
+      line-height: 1;
+    }
+    .brand-mark .sub {
+      font-size: 6pt;
+      letter-spacing: 1.8px;
+      font-weight: 700;
+    }
+
+    .section-title {
+      font-size: 18pt;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    /* 4-Column Product Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px 14px;
+      align-items: start;
+    }
+
+    .card {
+      break-inside: avoid;
+      page-break-inside: avoid;
+      border: 1px solid #e6e6e6;
+      border-radius: 6px;
+      padding: 8px;
+      background: #fff;
+    }
+
+    .img-box {
+      height: 115px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 6px;
+    }
+    .img-box img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .card-title {
+      font-size: 8.5pt;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 5px;
+      line-height: 1.2;
+      color: #000;
+    }
+
+    table.variants {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 7.5pt;
+    }
+    table.variants td {
+      padding: 2px 3px;
+      border-top: 1px solid #f0f0f0;
+      vertical-align: top;
+    }
+    table.variants td.sku {
+      font-weight: 700;
+      white-space: nowrap;
+      width: 28%;
+    }
+    table.variants td.spec {
+      text-align: center;
+      color: #333;
+    }
+    table.variants td.rate {
+      font-weight: 700;
+      text-align: right;
+      white-space: nowrap;
+      width: 25%;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cover Page -->
+  <div class="cover">
+    <div class="cover-logo">KBS</div>
+    <div class="cover-sub">KHANDELWAL BATH STUDIO</div>
+    <div class="cover-tag">RATE CODE CATALOGUE</div>
+  </div>
+
+  <!-- Product Sections -->
+  {% for section in sections %}
+  <div class="section">
+    <div class="section-header">
+      <div class="brand-mark">
+        <div class="kbs">KBS</div>
+        <div class="sub">KHANDELWAL BATH STUDIO</div>
+      </div>
+      <div class="section-title">{{ section.title }}</div>
+    </div>
+
+    <div class="grid">
+      {% for card in section.cards %}
+      <div class="card">
+        <div class="img-box">
+          {% if card.image %}
+          <img src="{{ card.image }}" alt="{{ card.title }}" onerror="this.style.display='none'" />
+          {% endif %}
+        </div>
+        <div class="card-title">{{ card.title }}</div>
+        <table class="variants">
+          {% for v in card.variants %}
+          <tr>
+            <td class="sku">{{ v.id }}</td>
+            <td class="spec">{{ v.spec }}</td>
+            <td class="rate">{{ v.rate }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endfor %}
+
+</body>
+</html>
